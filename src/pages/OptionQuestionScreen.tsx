@@ -1,20 +1,19 @@
-import { useState } from "react";
 import Progreso from "../components/ProgressBar"; // Asegúrate de que la ruta es correcta
 import { Card, CardContent, CardMedia, Slide, Typography } from "@mui/material";
 import Opciones from "../components/Options";
 import Timer from "../components/TimeBar";
 import BotonConfirmar from "../components/BotonConfirmar";
+import { useSelector } from 'react-redux';
+import { RootState } from "../store";
 
 const OptionQuestionScreen = () => {
-  const [progreso, setProgreso] = useState<number>(1); // Estado con progreso inicial
-  const [pregunta, setPregunta] = useState<string>("¿Qué es la inteligencia artificial?"); // Estado con progreso inicial
-
-  const imagenUrl = "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg"; // URL de una imagen de ejemplo
-
+  const imagenUrl= useSelector((state: RootState) => state.data.currentQuestion.image);
+  
+  const pregunta = "¿Qué es la inteligencia artificial?"
   return (
     <div style={{ maxWidth: "500px", minWidth: "350px", width: "50%", margin: "20px auto" }}>
       <div style={{ width: "100%" }}>
-        <Progreso progreso={progreso} />
+        <Progreso/>
       </div>
       <Slide direction="down" in={true} mountOnEnter unmountOnExit>
         <Card sx={{ maxWidth: 500, margin: "auto", mt: 2, p: 2 }}>
