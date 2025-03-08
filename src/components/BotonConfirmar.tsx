@@ -10,8 +10,8 @@ const BotonConfirmar: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean | null>(false)
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState<boolean | null>(true);
 
+  //redux
   const isCorrect= useSelector((state: RootState) => state.ui.isCorrect)
-
   const dispatch = useDispatch<AppDispatch>();
   const manejarConfirmacion = () => {
     setOpenModal(true);
