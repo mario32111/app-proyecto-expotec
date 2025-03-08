@@ -1,17 +1,14 @@
 import { LinearProgress } from "@mui/material";
 
-interface ProgresoProps {
-  progreso: number; // Asegura que progreso sea un número
+function Progreso() {
+  const progreso = 1;
+  return (
+    <LinearProgress
+      variant="determinate"
+      value={progreso}
+      color="primary"
+    />
+  );
 }
-
-function Progreso({ progreso }: ProgresoProps) {
-    return (
-        <LinearProgress
-          variant="determinate"
-          value={progreso} 
-          color="primary"
-        />
-      );
-      }
 
 export default Progreso;
