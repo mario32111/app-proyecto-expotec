@@ -8,7 +8,7 @@ import { AppDispatch } from '../store';
 
 const BotonConfirmar: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean | null>(false)
-  const [respuestaSeleccionada, setRespuestaSeleccionada] = useState<boolean | null>(true);
+  const [respuestaSeleccionada] = useState<boolean | null>(true);
 
   //redux
   const isCorrect= useSelector((state: RootState) => state.ui.isCorrect)

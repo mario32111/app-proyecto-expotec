@@ -21,7 +21,8 @@ export const dataSlice = createSlice({
     initialState,
     reducers: {
         // Acción para establecer la calificación (aunque no hace nada en este momento)
-        setCalification: (state, action: PayloadAction<boolean>) => {
+        setCalification: (state, action: PayloadAction<string>) => {
+            state.selectedOption= action.payload;
             // Lógica de calificación aquí si es necesario
         },
         // Acción para actualizar la siguiente pregunta basada en el índice de progreso
