@@ -5,6 +5,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducer/rootReducer';
 import './index.css';
 import App from './App.tsx';
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "./shared/theme";
 
 // Configurar la store con Redux DevTools habilitado
 const store = configureStore({
@@ -15,7 +17,9 @@ const store = configureStore({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </Provider>
   </StrictMode>
 );

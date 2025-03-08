@@ -29,7 +29,12 @@ const Opciones: React.FC = () => {
   };
 
   return (
-    <FormControl ref={containerRef} sx={{ marginLeft: "30px" }}>
+    <FormControl
+      ref={containerRef}
+      sx={{
+        marginLeft: { xs: 0, sm: 0, md: "30px" } // Aplica margen izquierdo solo en pantallas medianas y grandes
+      }}
+    >
       <RadioGroup value={seleccion} onChange={(e) => manejarSeleccion(e.target.value)}>
         {opciones.map((opcion, index) => (
           <Slide key={index} direction="down" in={index <= isVisibleIndex} mountOnEnter unmountOnExit>
@@ -38,6 +43,7 @@ const Opciones: React.FC = () => {
         ))}
       </RadioGroup>
     </FormControl>
+
   );
 };
 
