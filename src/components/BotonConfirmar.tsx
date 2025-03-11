@@ -1,21 +1,20 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
 import ModalResultado from "./ModalResultado";
-import { RootState } from "../store";
-import { setCorrectWithState } from "../slices/uiSlice";
+import { AppDispatch, RootState } from "../store";
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store';
+import { setCorrectWithState, setOpenModal } from "../slices/uiSlice";
 
 const BotonConfirmar: React.FC = () => {
-  const [openModal, setOpenModal] = useState<boolean | null>(false)
   const [respuestaSeleccionada] = useState<boolean | null>(true);
 
   //redux
-  const isCorrect= useSelector((state: RootState) => state.ui.isCorrect)
-  const dispatch = useDispatch<AppDispatch>();
+  const openModal = useSelector((state: RootState) => state.ui.openedModal);
+  const dispatch: AppDispatch = useDispatch();
+
   const manejarConfirmacion = () => {
-    setOpenModal(true);
-    dispatch(setCorrectWithState())
+    dispatch(setOpenModal(true));
+    dispatch(setCorrectWithState());
   };
   return (
     <>
@@ -28,10 +27,7 @@ const BotonConfirmar: React.FC = () => {
       >
         Confirmar Respuesta
       </Button>
-      {openModal && <ModalResultado
-        abierto={true}
-        esCorrecto={isCorrect}
-      />}
+      {openModal && <ModalResultado/>}
     </>
 
 

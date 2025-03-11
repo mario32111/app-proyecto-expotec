@@ -46,9 +46,12 @@ export const UiSlice = createSlice({
         setOpenModal: (state, action: PayloadAction<boolean>) => {
             state.openedModal = action.payload;
         },
+        setProgress(state) {
+            state.progress = state.progress + 1;
+        }
     }
 });
 
-export const { setLoading, setCorrect } = UiSlice.actions;
+export const { setLoading, setCorrect, setProgress, setOpenModal } = UiSlice.actions;
 
 export default UiSlice.reducer;

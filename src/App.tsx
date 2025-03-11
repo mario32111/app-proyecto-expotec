@@ -1,10 +1,8 @@
-import OptionQuestionScreen from "./pages/OptionQuestionScreen"; // Importa el nuevo componente
+import { AppRoutes } from "./shared/hooks/useNavigation";
 
 function App() {
   return (
-    <div>
-      <OptionQuestionScreen />
-    </div>
+      <AppRoutes/>
   );
 }
 

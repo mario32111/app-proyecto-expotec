@@ -1,7 +1,9 @@
 import { LinearProgress } from "@mui/material";
+import { RootState } from "../store";
+import { useSelector } from 'react-redux';
 
 function Progreso() {
-  const progreso = 1;
+  const progreso = useSelector((state: RootState) => state.ui.progress)*20;
   return (
     <LinearProgress
       variant="determinate"

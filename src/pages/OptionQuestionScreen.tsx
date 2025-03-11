@@ -8,8 +8,7 @@ import { RootState } from "../store";
 
 const OptionQuestionScreen = () => {
   const imagenUrl= useSelector((state: RootState) => state.data.currentQuestion.image);
-  
-  const pregunta = "¿Qué es la inteligencia artificial?"
+  const pregunta= useSelector((state: RootState) => state.data.currentQuestion.ask);
   return (
     <div style={{ maxWidth: "500px", minWidth: "350px", width: "50%", margin: "20px auto" }}>
       <div style={{ width: "100%" }}>
@@ -33,7 +32,7 @@ const OptionQuestionScreen = () => {
         </Card>
       </Slide>
 
-      <div style={{ width: "100%", marginTop: "20px" }}>
+      <div style={{ width: "100%", marginTop: "10px" }}>
         <Timer />
       </div>
     </div>

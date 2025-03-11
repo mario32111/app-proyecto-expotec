@@ -1,16 +1,31 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
+import { setOpenModal, setProgress } from "../slices/uiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store";
+import { nextCurrentQuestion } from "../slices/dataSlice";
 
-interface ModalResultadoProps {
-  abierto: boolean;
-  esCorrecto: boolean;
-}
 
-const ModalResultado: React.FC<ModalResultadoProps> = ({ abierto, esCorrecto}) => {
-    const onCerrar = () => {
+const ModalResultado: React.FC = () => {
 
-    }
+  //Redux
+  const isCorrect = useSelector((state: RootState) => state.ui.isCorrect);
+  const openModal = useSelector((state: RootState) => state.ui.openedModal);
+  const dispatch: AppDispatch = useDispatch();
+  const progress = useSelector((state: RootState) => state.ui.progress);
+
+  const onCerrar = () => {
+    dispatch(setOpenModal(false)); // Cierra el modal
+  };
+  
+  const onSiguientePregunta = () => {
+    onCerrar(); // Cierra el modal después de navegar
+    dispatch(setProgress())
+    dispatch(nextCurrentQuestion(progress+1))
+  };
+
+
   return (
-    <Modal open={abierto} onClose={onCerrar}>
+    <Modal open={openModal} onClose={onCerrar}>
       <Box
         sx={{
           position: "absolute",
@@ -26,10 +41,10 @@ const ModalResultado: React.FC<ModalResultadoProps> = ({ abierto, esCorrecto}) =
           borderRadius: 2,
         }}
       >
-        <Typography variant="h6" color={esCorrecto ? "green" : "red"}>
-          {esCorrecto ? "¡Respuesta Correcta! 🎉" : "Respuesta Incorrecta ❌"}
+        <Typography variant="h6" color={isCorrect ? "green" : "red"}>
+          {isCorrect ? "¡Respuesta Correcta! 🎉" : "Respuesta Incorrecta ❌"}
         </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 2 }} /* onClick={onSiguientePregunta} */>
+        <Button onClick={onSiguientePregunta} variant="contained" color="primary" sx={{ mt: 2 }}>
           Siguiente Pregunta
         </Button>
       </Box>
