@@ -25,7 +25,7 @@ const ModalResultado: React.FC = () => {
 
 
   return (
-    <Modal open={openModal} onClose={onCerrar}>
+    <Modal open={openModal}/*  onClose={onSiguientePregunta} */>
       <Box
         sx={{
           position: "absolute",
