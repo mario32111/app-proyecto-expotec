@@ -64,7 +64,8 @@ const initialState: DataState = {
         ],
         image: "",
     },
-    selectedOption: ""
+    selectedOption: "",
+    score:0,
 };
 
 export const dataSlice = createSlice({
@@ -72,8 +73,8 @@ export const dataSlice = createSlice({
     initialState,
     reducers: {
         // Acción para establecer la calificación (aunque no hace nada en este momento)
-        setCalification: (state, action: PayloadAction<string>) => {
-            state.selectedOption = action.payload;
+        setScore: (state) => {
+            state.score=state.score+1;
             // Lógica de calificación aquí si es necesario
         },
         // Acción para actualizar la siguiente pregunta basada en el índice de progreso
@@ -99,6 +100,6 @@ export const dataSlice = createSlice({
     }
 });
 
-export const { setCalification, nextCurrentQuestion, setSelectedOption, setCurrentQuestion } = dataSlice.actions;
+export const { setScore, nextCurrentQuestion, setSelectedOption, setCurrentQuestion } = dataSlice.actions;
 
 export default dataSlice.reducer;

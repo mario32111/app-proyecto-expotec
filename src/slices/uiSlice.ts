@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, UiState } from "./types"; // Importa la interfaz desde el archivo de tipos
 import { AppThunk } from "../store";
-
+import { setScore } from "./dataSlice"
 
 const initialState: UiState = {
     loading: false,
     isCorrect: false,
     progress: 0,
     openedModal: false,
+    showScoreModal: false
 }
 
 export const setCorrectWithState = (): AppThunk => (dispatch, getState) => {
@@ -18,9 +19,9 @@ export const setCorrectWithState = (): AppThunk => (dispatch, getState) => {
 
     // Busca si la opción seleccionada es correcta
     const selectedAnswer = currentQuestion.options.find(option => option.text === selectedOption);
-    console.log(selectedAnswer)
     if (selectedAnswer && selectedAnswer.isCorrect) {
         dispatch(setCorrect(true));
+        dispatch(setScore());
         
     } else {
         dispatch(setCorrect(false));
@@ -48,10 +49,13 @@ export const UiSlice = createSlice({
         },
         setProgress(state) {
             state.progress = state.progress + 1;
+        },
+        setShowScoreModal(state, action: PayloadAction<boolean>) {
+            state.showScoreModal=action.payload
         }
     }
 });
 
-export const { setLoading, setCorrect, setProgress, setOpenModal } = UiSlice.actions;
+export const { setLoading, setCorrect, setProgress, setOpenModal, setShowScoreModal } = UiSlice.actions;
 
 export default UiSlice.reducer;

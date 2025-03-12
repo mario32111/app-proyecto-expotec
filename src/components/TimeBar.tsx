@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from "../store";
 import { setCorrectWithState, setOpenModal } from "../slices/uiSlice";
 import styled, { keyframes, css } from "styled-components";
+import ScoreModal from "./ScoreModal";
 
 const blinkAnimation = keyframes`
   0%, 100% { transform: scale(1); color: black; font-weight: normal; }
@@ -14,7 +15,7 @@ const blinkAnimation = keyframes`
 const TimeDisplay = styled.div<{ $isCritical: boolean }>`
   text-align: right;
   font-size: 1.2em;
-  ${({ $isCritical }) => 
+  ${({ $isCritical }) =>
     $isCritical &&
     css`
       animation: ${blinkAnimation} 0.8s ease-in-out infinite;
@@ -66,6 +67,8 @@ const Timer: React.FC = () => {
       <div>
         <LinearProgress variant="determinate" value={progreso} color="secondary" />
         {progreso >= 100 && <ModalResultado />}
+        <ScoreModal />
+
       </div>
       <TimeDisplay $isCritical={isCritical}>{time.toFixed(1)} s</TimeDisplay>
     </>

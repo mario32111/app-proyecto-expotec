@@ -1,31 +1,32 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
-import { setOpenModal, setProgress } from "../slices/uiSlice";
+import { setOpenModal, setProgress, setShowScoreModal } from "../slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { nextCurrentQuestion } from "../slices/dataSlice";
 
-
 const ModalResultado: React.FC = () => {
-
-  //Redux
+  const dispatch: AppDispatch = useDispatch();
   const isCorrect = useSelector((state: RootState) => state.ui.isCorrect);
   const openModal = useSelector((state: RootState) => state.ui.openedModal);
-  const dispatch: AppDispatch = useDispatch();
   const progress = useSelector((state: RootState) => state.ui.progress);
 
   const onCerrar = () => {
-    dispatch(setOpenModal(false)); // Cierra el modal
-  };
-  
-  const onSiguientePregunta = () => {
-    onCerrar(); // Cierra el modal después de navegar
-    dispatch(setProgress())
-    dispatch(nextCurrentQuestion(progress+1))
+    dispatch(setOpenModal(false)); // Cierra el modal actual
   };
 
+  const onSiguientePregunta = () => {
+    onCerrar(); // Cierra el modal actual
+    dispatch(setProgress()); // Incrementa el progreso
+    dispatch(nextCurrentQuestion(progress + 1)); // Pasa a la siguiente pregunta
+
+    if (progress + 1 >= 5) {
+      // Si el progreso es igual o mayor a 5, muestra el modal de resultados
+      dispatch(setShowScoreModal(true));
+    }
+  };
 
   return (
-    <Modal open={openModal}/*  onClose={onSiguientePregunta} */>
+    <Modal open={openModal}>
       <Box
         sx={{
           position: "absolute",
@@ -44,7 +45,12 @@ const ModalResultado: React.FC = () => {
         <Typography variant="h6" color={isCorrect ? "green" : "red"}>
           {isCorrect ? "¡Respuesta Correcta! 🎉" : "Respuesta Incorrecta ❌"}
         </Typography>
-        <Button onClick={onSiguientePregunta} variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button
+          onClick={onSiguientePregunta}
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+        >
           Siguiente Pregunta
         </Button>
       </Box>

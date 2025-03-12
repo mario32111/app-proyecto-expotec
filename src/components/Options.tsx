@@ -31,7 +31,6 @@ const Opciones: React.FC = () => {
 
   const manejarSeleccion = (opcion: string) => {
     dispatch(setSelectedOption(opcion));
-    console.log("Opción seleccionada:", opcion);
   };
 
   return (

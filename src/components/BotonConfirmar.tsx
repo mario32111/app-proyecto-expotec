@@ -4,6 +4,7 @@ import ModalResultado from "./ModalResultado";
 import { AppDispatch, RootState } from "../store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCorrectWithState, setOpenModal } from "../slices/uiSlice";
+import ScoreModal from "./ScoreModal";
 
 const BotonConfirmar: React.FC = () => {
   const [respuestaSeleccionada] = useState<boolean | null>(true);
@@ -27,7 +28,10 @@ const BotonConfirmar: React.FC = () => {
       >
         Confirmar Respuesta
       </Button>
-      {openModal && <ModalResultado/>}
+      {openModal && <ModalResultado/>}     
+      <ScoreModal />
+ 
+
     </>
 
 

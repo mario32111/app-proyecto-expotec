@@ -2,6 +2,7 @@ export interface DataState {
     questions: Question[];
     currentQuestion: Question;
     selectedOption: string;
+    score: number;
 }
 
 export interface Question {
@@ -20,6 +21,7 @@ export interface UiState {
     isCorrect: boolean;
     progress: number;
     openedModal: boolean;
+    showScoreModal: boolean;
 }
 
 
