@@ -1,5 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import rootReducer from './reducer/rootReducer';
+import { useDispatch } from 'react-redux';
 // Configurar la store con Redux DevTools habilitado
 export const store = configureStore({
   reducer: rootReducer,
@@ -15,3 +16,4 @@ export type RootState = ReturnType<typeof store.getState>;
 
 // Exporta el dispatch de la tienda para usarlo en componentes de React
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
