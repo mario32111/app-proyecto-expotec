@@ -22,6 +22,12 @@ const TimeDisplay = styled.div<{ $isCritical: boolean }>`
     `}
 `;
 
+const TimerContainer = styled.div`
+  max-width: 600px; // Ancho máximo para centrar
+  width: 90%; // Ancho relativo para dispositivos pequeños
+  margin: 0 auto; // Centrado horizontal
+`;
+
 const Timer: React.FC = () => {
   const [progreso, setProgreso] = useState(0);
   const duracion = 10 * 1000; // 10 segundos en milisegundos
@@ -66,15 +72,12 @@ const Timer: React.FC = () => {
   }, [progressBar]);
 
   return (
-    <>
-      <div>
-        <LinearProgress variant="determinate" value={progreso} color="secondary" />
-        {progreso >= 100 && !showScoreModal &&<ModalResultado />}
-        <ScoreModal />
-
-      </div>
+    <TimerContainer>
+      <LinearProgress variant="determinate" value={progreso} color="secondary" />
+      {progreso >= 100 && !showScoreModal && <ModalResultado />}
+      <ScoreModal />
       <TimeDisplay $isCritical={isCritical}>{time.toFixed(1)} s</TimeDisplay>
-    </>
+    </TimerContainer>
   );
 };
 

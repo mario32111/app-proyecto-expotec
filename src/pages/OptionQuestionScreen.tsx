@@ -36,7 +36,7 @@ const OptionQuestionScreen = () => {
 
   return (
     <div style={{ maxWidth: "500px", minWidth: "350px", width: "50%", margin: "20px auto" }}>
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", margin: "auto"}}>
         <Progreso />
       </div>
       <Slide direction="down" in={true} mountOnEnter unmountOnExit>

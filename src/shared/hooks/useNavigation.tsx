@@ -1,6 +1,7 @@
 import { useNavigate, useRoutes } from 'react-router-dom';
 import OptionQuestionScreen from '../../pages/OptionQuestionScreen';
 import NotFound from '../../pages/NotFoundScreen';
+import UsersCategoryChart from '../../pages/UsersCategoryChart';
 
 export const useNavigation = () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ export const useNavigation = () => {
 export const AppRoutes = () => {
     return useRoutes([
         { path: '/', element: <OptionQuestionScreen /> },
+        { path: '/graph', element: <UsersCategoryChart /> },
         { path: '*', element: <NotFound /> }, // Maneja rutas no encontradas
     ]);
 };
