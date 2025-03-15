@@ -5,7 +5,7 @@ interface Config {
   
   const config: Config = {
     env: import.meta.env.VITE_ENV || "development",
-    api_url: import.meta.env.VITE_API_URL || "http://localhost:3000",
+    api_url: import.meta.env.VITE_API_URL || "http://localhost:3000/",
   };
   
   export { config };

@@ -3,6 +3,10 @@ import { DataState, Question } from "./types"; // Asegúrate de que la interfaz 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { config } from "../config/config"
 import { setLoading } from "./uiSlice";
+interface CategoryUpdatePayload {
+    id: number; // Nombre de la categoría (redes, web, etc.)
+    value: boolean; // El valor de la categoría (true o false)
+}
 
 const initialState: DataState = {
     questions: [
@@ -38,6 +42,13 @@ const initialState: DataState = {
     },
     selectedOption: undefined,
     score: 0,
+    history: {
+        redes: false,
+        web: false,
+        ia: false,
+        bd: false,
+        seguridad: false,
+    }
 };
 
 export const fetchRandomQuestionByCategory = createAsyncThunk<
@@ -51,7 +62,7 @@ export const fetchRandomQuestionByCategory = createAsyncThunk<
             dispatch(setLoading(true));
 
             const response = await fetch(`${config.api_url}/api/v1/question/random-by-category`);
-
+            console.log(config.api_url)
             if (!response.ok) {
                 throw new Error('Error al obtener la pregunta');
             }
@@ -70,6 +81,30 @@ export const fetchRandomQuestionByCategory = createAsyncThunk<
         }
     }
 );
+
+// Acción para enviar el request PATCH a la API
+const incrementUsers = async (ids: number[]) => {
+    console.log('llamando a la api');
+    try {
+        const response = await fetch(`${config.api_url}/api/v1/category/incrementUsers`, {
+            method: 'PATCH', // Cambiar POST a PATCH
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids }), // Mantén el body con los ids
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al actualizar las categorías');
+        }
+
+        const result = await response.json();
+        console.log('Categorías actualizadas:', result);
+    } catch (error) {
+        console.error('Error al hacer la petición a la API:', error);
+    }
+};
+
 export const dataSlice = createSlice({
     name: 'data',
     initialState,
@@ -104,10 +139,62 @@ export const dataSlice = createSlice({
         },
         setDefaultData() {
             return initialState;
-        }
+        },
+        setHistory: (state, action: PayloadAction<CategoryUpdatePayload>) => {
+            console.log("acpdd",action.payload)
+            // Actualizamos el estado history
+            const { id, value } = action.payload;
+            const updatedHistory = { ...state.history };
+
+            // Asignamos el valor correspondiente a la categoría en el estado
+            switch (id) {
+                case 1:
+                    updatedHistory.redes = value;
+                    break;
+                case 2:
+                    updatedHistory.web = value;
+                    break;
+                case 3:
+                    updatedHistory.ia = value;
+                    break;
+                case 4:
+                    updatedHistory.bd = value;
+                    break;
+                case 5:
+                    updatedHistory.seguridad = value;
+                    break;
+                default:
+                    console.log("Categoría fuera de rango, no se actualizó ningún campo");
+                    return;
+            }
+
+            state.history = updatedHistory; // Actualiza el estado del history
+
+            // Filtramos los ids donde el estado es true
+            const idsToSend = [];
+            if (updatedHistory.redes) idsToSend.push(1);
+            if (updatedHistory.web) idsToSend.push(2);
+            if (updatedHistory.ia) idsToSend.push(3);
+            if (updatedHistory.bd) idsToSend.push(4);
+            if (updatedHistory.seguridad) idsToSend.push(5);
+
+            console.log("idssssssssssss", idsToSend);
+            console.log("Categoría actualizada:", id, "Valor:", value);
+
+            // Si hay ids para enviar, hacemos la solicitud a la API
+            if (idsToSend.length > 0 && action.payload.id >=5) {
+                incrementUsers(idsToSend); // Llama a la función para enviar los ids a la API
+            }
+        },
     }
 });
 
-export const { setScore, nextCurrentQuestion, setSelectedOption, setCurrentQuestion, setQuestions, setDefaultData } = dataSlice.actions;
+export const { setScore,
+    nextCurrentQuestion,
+    setSelectedOption,
+    setCurrentQuestion,
+    setQuestions,
+    setDefaultData,
+    setHistory } = dataSlice.actions;
 
 export default dataSlice.reducer;

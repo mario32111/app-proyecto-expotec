@@ -27,12 +27,15 @@ const Timer: React.FC = () => {
   const duracion = 10 * 1000; // 10 segundos en milisegundos
   const dispatch = useDispatch<AppDispatch>();
   const progressBar = useSelector((state: RootState) => state.ui.progress);
+  const showScoreModal = useSelector((state: RootState) => state.ui.showScoreModal);
 
   // Calcular el tiempo restante
   const time = 10 - ((progreso / 100) * duracion / 1000);
   const isCritical = time <= 3; // Cuando quedan 3 segundos
 
   useEffect(() => {
+    if (progressBar === 5) return;
+
     const intervalo = 100; // Cada cuánto se actualiza el progreso (en ms)
     const incremento = (intervalo / duracion) * 100; // Cuánto aumenta en cada intervalo
 
@@ -66,7 +69,7 @@ const Timer: React.FC = () => {
     <>
       <div>
         <LinearProgress variant="determinate" value={progreso} color="secondary" />
-        {progreso >= 100 && <ModalResultado />}
+        {progreso >= 100 && !showScoreModal &&<ModalResultado />}
         <ScoreModal />
 
       </div>

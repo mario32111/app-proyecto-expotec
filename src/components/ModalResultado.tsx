@@ -2,7 +2,7 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 import { setOpenModal, setProgress, setShowScoreModal } from "../slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { nextCurrentQuestion } from "../slices/dataSlice";
+import { nextCurrentQuestion, setHistory } from "../slices/dataSlice";
 
 const ModalResultado: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -17,10 +17,13 @@ const ModalResultado: React.FC = () => {
   const onSiguientePregunta = () => {
     onCerrar(); // Cierra el modal actual
     dispatch(setProgress()); // Incrementa el progreso
+    
+    dispatch(setHistory({ id: progress + 1, value: isCorrect }));
+
     dispatch(nextCurrentQuestion(progress + 1)); // Pasa a la siguiente pregunta
 
     if (progress + 1 >= 5) {
-      // Si el progreso es igual o mayor a 5, muestra el modal de resultados
+
       dispatch(setShowScoreModal(true));
     }
   };
