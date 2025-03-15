@@ -62,13 +62,11 @@ export const fetchRandomQuestionByCategory = createAsyncThunk<
             dispatch(setLoading(true));
 
             const response = await fetch(`${config.api_url}/api/v1/question/random-by-category`);
-            console.log(config.api_url)
             if (!response.ok) {
                 throw new Error('Error al obtener la pregunta');
             }
 
             const data: Question[] = await response.json();
-            console.log('Pregunta recibida:', data);
 
             // Despachar setQuestions con los datos recibidos
             dispatch(setQuestions(data));
@@ -84,7 +82,6 @@ export const fetchRandomQuestionByCategory = createAsyncThunk<
 
 // Acción para enviar el request PATCH a la API
 const incrementUsers = async (ids: number[]) => {
-    console.log('llamando a la api');
     try {
         const response = await fetch(`${config.api_url}/api/v1/category/incrementUsers`, {
             method: 'PATCH', // Cambiar POST a PATCH
@@ -99,7 +96,6 @@ const incrementUsers = async (ids: number[]) => {
         }
 
         const result = await response.json();
-        console.log('Categorías actualizadas:', result);
     } catch (error) {
         console.error('Error al hacer la petición a la API:', error);
     }
@@ -123,7 +119,6 @@ export const dataSlice = createSlice({
                 state.currentQuestion = state.questions[progress];
             } else {
                 // Si no hay más preguntas, puedes manejarlo de alguna manera
-                console.log("No hay más preguntas disponibles.");
                 // Opcional: Reiniciar el progreso o mostrar un mensaje al usuario
             }
         },
@@ -141,7 +136,6 @@ export const dataSlice = createSlice({
             return initialState;
         },
         setHistory: (state, action: PayloadAction<CategoryUpdatePayload>) => {
-            console.log("acpdd",action.payload)
             // Actualizamos el estado history
             const { id, value } = action.payload;
             const updatedHistory = { ...state.history };
@@ -164,7 +158,6 @@ export const dataSlice = createSlice({
                     updatedHistory.seguridad = value;
                     break;
                 default:
-                    console.log("Categoría fuera de rango, no se actualizó ningún campo");
                     return;
             }
 
@@ -177,9 +170,6 @@ export const dataSlice = createSlice({
             if (updatedHistory.ia) idsToSend.push(3);
             if (updatedHistory.bd) idsToSend.push(4);
             if (updatedHistory.seguridad) idsToSend.push(5);
-
-            console.log("idssssssssssss", idsToSend);
-            console.log("Categoría actualizada:", id, "Valor:", value);
 
             // Si hay ids para enviar, hacemos la solicitud a la API
             if (idsToSend.length > 0 && action.payload.id >=5) {
