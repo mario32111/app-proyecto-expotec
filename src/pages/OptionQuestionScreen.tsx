@@ -3,13 +3,27 @@ import { Card, CardContent, CardMedia, Slide, Typography } from "@mui/material";
 import Opciones from "../components/Options";
 import Timer from "../components/TimeBar";
 import BotonConfirmar from "../components/BotonConfirmar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useEffect, useRef } from "react";
+import { fetchRandomQuestionByCategory } from "../slices/dataSlice";
 
 const OptionQuestionScreen = () => {
   const imagenUrl = useSelector((state: RootState) => state.data.currentQuestion.image);
-  const pregunta = useSelector((state: RootState) => state.data.currentQuestion.ask);
+  const pregunta = useSelector((state: RootState) => state.data.currentQuestion.text);
+  const dispatch = useDispatch();
+  const hasFetched = useRef(false); // Bandera para controlar la ejecución
 
+  useEffect(() => {
+    if (!hasFetched.current) { // Solo ejecutar si no se ha hecho antes
+      hasFetched.current = true; // Marcar como ejecutado
+      const fetchData = async () => {
+        await dispatch(fetchRandomQuestionByCategory());
+      };
+      fetchData();
+    }
+  }, [dispatch]);
+  
   return (
     <div style={{ maxWidth: "500px", minWidth: "350px", width: "50%", margin: "20px auto" }}>
       <div style={{ width: "100%" }}>

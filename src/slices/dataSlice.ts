@@ -1,73 +1,101 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DataState } from "./types"; // Asegúrate de que la interfaz de tipo esté bien definida
+import { DataState, Question } from "./types"; // Asegúrate de que la interfaz de tipo esté bien definida
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState: DataState = {
-    questions : [
+    questions: [
         {
-            ask: "¿Qué significa 'CPU' en informática?",
-            options: [
-                { text: "Unidad Central de Procesamiento", isCorrect: true },
-                { text: "Controlador Principal de Usuario", isCorrect: false },
-                { text: "Computadora Personal Universal", isCorrect: false },
-                { text: "Centro de Procesos Unidos", isCorrect: false }
-            ],
+            id: 1,
+            categoryId: 1,
+            text: "¿Qué significa 'CPU' en informática?",
             image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
+            category: {
+                id: 1,
+                name: "Informática",
+                usersQuantity: 0,
+            },
+            options: [
+                { id: 101, questionId: 1, text: "Unidad Central de Procesamiento", isCorrect: true },
+                { id: 102, questionId: 1, text: "Controlador Principal de Usuario", isCorrect: false },
+                { id: 103, questionId: 1, text: "Computadora Personal Universal", isCorrect: false },
+            ],
         },
         {
-            ask: "¿Qué es un 'byte'?",
-            options: [
-                { text: "Un tipo de dato que almacena un carácter", isCorrect: false },
-                { text: "Una unidad de información compuesta por 8 bits", isCorrect: true },
-                { text: "Un lenguaje de programación", isCorrect: false },
-                { text: "Un dispositivo de almacenamiento", isCorrect: false }
-            ],
+            id: 2,
+            categoryId: 1,
+            text: "¿Qué es un 'byte'?",
             image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
+            category: {
+                id: 1,
+                name: "Informática",
+                usersQuantity: 0,
+            },
+            options: [
+                { id: 201, questionId: 2, text: "Un tipo de dato que almacena un carácter", isCorrect: false },
+                { id: 202, questionId: 2, text: "Una unidad de información compuesta por 8 bits", isCorrect: true },
+                { id: 203, questionId: 2, text: "Un lenguaje de programación", isCorrect: false },
+            ],
         },
         {
-            ask: "¿Qué hace un 'firewall'?",
-            options: [
-                { text: "Protege una red de accesos no autorizados", isCorrect: true },
-                { text: "Acelera la velocidad de internet", isCorrect: false },
-                { text: "Almacena datos en la nube", isCorrect: false },
-                { text: "Convierte archivos a diferentes formatos", isCorrect: false }
-            ],
+            id: 3,
+            categoryId: 2,
+            text: "¿Qué hace un 'firewall'?",
             image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
+            category: {
+                id: 2,
+                name: "Seguridad",
+                usersQuantity: 0,
+            },
+            options: [
+                { id: 301, questionId: 3, text: "Protege una red de accesos no autorizados", isCorrect: true },
+                { id: 302, questionId: 3, text: "Acelera la velocidad de internet", isCorrect: false },
+                { id: 303, questionId: 3, text: "Almacena datos en la nube", isCorrect: false },
+            ],
         },
-        {
-            ask: "¿Qué es un 'URL'?",
-            options: [
-                { text: "Un lenguaje de programación", isCorrect: false },
-                { text: "Un protocolo de transferencia de archivos", isCorrect: false },
-                { text: "La dirección de una página web", isCorrect: true },
-                { text: "Un tipo de virus informático", isCorrect: false }
-            ],
-            image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
-        },
-        {
-            ask: "¿Qué es 'HTML'?",
-            options: [
-                { text: "Un lenguaje de programación para aplicaciones móviles", isCorrect: false },
-                { text: "Un sistema operativo", isCorrect: false },
-                { text: "Un lenguaje de marcado para crear páginas web", isCorrect: true },
-                { text: "Un tipo de base de datos", isCorrect: false }
-            ],
-            image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
-        }
     ],
     currentQuestion: {
-        ask: "",
-        options: [
-            { text: "", isCorrect: false},
-            { text: "", isCorrect: false },
-            { text: "", isCorrect: false },
-            { text: "", isCorrect: false }
-        ],
-        image: "",
+        id: 0,
+        categoryId: 0,
+        text: "",
+        image: null,
+        category: {
+            id: 0,
+            name: "",
+            usersQuantity: 0,
+        },
+        options: [],
     },
-    selectedOption: "",
-    score:0,
+    selectedOption: undefined,
+    score: 0,
 };
 
+export const fetchRandomQuestionByCategory = createAsyncThunk<
+  Question[], // Tipo de dato que devuelve el thunk
+  void,       // No recibe parámetros
+  { rejectValue: string } // Tipo de error esperado
+>(
+  'data/fetchRandomQuestionByCategory',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/v1/question/random-by-category`);
+      
+      if (!response.ok) {
+        throw new Error('Error al obtener la pregunta');
+      }
+
+      const data: Question[] = await response.json();
+      console.log('Pregunta recibida:', data);
+
+      // Despachar setQuestions con los datos recibidos
+      dispatch(setQuestions(data));
+      dispatch(setCurrentQuestion())
+
+      return data; // Devuelve los datos para que estén disponibles en el estado
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Error desconocido');
+    }
+  }
+);
 export const dataSlice = createSlice({
     name: 'data',
     initialState,
@@ -97,9 +125,12 @@ export const dataSlice = createSlice({
         setSelectedOption: (state, action: PayloadAction<string>) => {
             state.selectedOption = action.payload;
         },
+        setQuestions: (state, action: PayloadAction<Question[]>) => {
+            state.questions = action.payload;
+          },
     }
 });
 
-export const { setScore, nextCurrentQuestion, setSelectedOption, setCurrentQuestion } = dataSlice.actions;
+export const { setScore, nextCurrentQuestion, setSelectedOption, setCurrentQuestion, setQuestions } = dataSlice.actions;
 
 export default dataSlice.reducer;

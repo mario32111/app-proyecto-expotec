@@ -1,21 +1,39 @@
+//DATOS DE LA API
+export interface Question{
+    id: number;
+    categoryId: number;
+    text: string;
+    image: string | null;
+    category: Category;
+    options: Option[];
+  }
+  
+export interface Option {
+    id: number;
+    questionId: number;
+    text: string;
+    isCorrect: boolean;
+  }
+  
+export interface Category {
+    id: number;
+    name: string;
+    usersQuantity: number;
+  }
+
+
 export interface DataState {
     questions: Question[];
     currentQuestion: Question;
-    selectedOption: string;
+    selectedOption?: string;
     score: number;
 }
 
-export interface Question {
-    ask: string;
-    options: Option[];
-    image: string;
-}
 
-interface Option {
-    text: string;
-    isCorrect: boolean;
-}
 
+
+
+//UI
 export interface UiState {
     loading: boolean;
     isCorrect: boolean;
