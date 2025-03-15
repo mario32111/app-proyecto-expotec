@@ -12,6 +12,7 @@ const BotonConfirmar: React.FC = () => {
   //redux
   const openModal = useSelector((state: RootState) => state.ui.openedModal);
   const dispatch: AppDispatch = useDispatch();
+  
 
   const manejarConfirmacion = () => {
     dispatch(setOpenModal(true));
