@@ -1,57 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataState, Question } from "./types"; // Asegúrate de que la interfaz de tipo esté bien definida
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { config } from "../config/config"
 
 const initialState: DataState = {
     questions: [
         {
             id: 1,
             categoryId: 1,
-            text: "¿Qué significa 'CPU' en informática?",
-            image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
+            text: "",
+            image: "",
             category: {
                 id: 1,
-                name: "Informática",
+                name: "",
                 usersQuantity: 0,
             },
             options: [
-                { id: 101, questionId: 1, text: "Unidad Central de Procesamiento", isCorrect: true },
-                { id: 102, questionId: 1, text: "Controlador Principal de Usuario", isCorrect: false },
-                { id: 103, questionId: 1, text: "Computadora Personal Universal", isCorrect: false },
+                { id: 101, questionId: 1, text: "", isCorrect: true },
+                { id: 102, questionId: 1, text: "", isCorrect: false },
+                { id: 103, questionId: 1, text: "", isCorrect: false },
             ],
         },
-        {
-            id: 2,
-            categoryId: 1,
-            text: "¿Qué es un 'byte'?",
-            image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
-            category: {
-                id: 1,
-                name: "Informática",
-                usersQuantity: 0,
-            },
-            options: [
-                { id: 201, questionId: 2, text: "Un tipo de dato que almacena un carácter", isCorrect: false },
-                { id: 202, questionId: 2, text: "Una unidad de información compuesta por 8 bits", isCorrect: true },
-                { id: 203, questionId: 2, text: "Un lenguaje de programación", isCorrect: false },
-            ],
-        },
-        {
-            id: 3,
-            categoryId: 2,
-            text: "¿Qué hace un 'firewall'?",
-            image: "https://www.seguritecnia.es/wp-content/uploads/2022/03/inteligencia-artificial-900x600.jpg",
-            category: {
-                id: 2,
-                name: "Seguridad",
-                usersQuantity: 0,
-            },
-            options: [
-                { id: 301, questionId: 3, text: "Protege una red de accesos no autorizados", isCorrect: true },
-                { id: 302, questionId: 3, text: "Acelera la velocidad de internet", isCorrect: false },
-                { id: 303, questionId: 3, text: "Almacena datos en la nube", isCorrect: false },
-            ],
-        },
+        
     ],
     currentQuestion: {
         id: 0,
@@ -77,7 +47,7 @@ export const fetchRandomQuestionByCategory = createAsyncThunk<
   'data/fetchRandomQuestionByCategory',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/question/random-by-category`);
+      const response = await fetch(`${config.api_url}/api/v1/question/random-by-category`);
       
       if (!response.ok) {
         throw new Error('Error al obtener la pregunta');
