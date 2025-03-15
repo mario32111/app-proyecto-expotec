@@ -1,8 +1,8 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { setShowScoreModal } from "../slices/uiSlice";
-
+import { setDefaultUi, setShowScoreModal } from "../slices/uiSlice";
+import { fetchRandomQuestionByCategory, setDefaultData } from "../slices/dataSlice";
 const ScoreModal: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const showScoreModal = useSelector((state: RootState) => state.ui.showScoreModal);
@@ -10,6 +10,14 @@ const ScoreModal: React.FC = () => {
 
   const onCerrar = () => {
     dispatch(setShowScoreModal(false)); // Cierra el modal de resultados
+    dispatch(setDefaultUi());
+    dispatch(setDefaultData());
+
+    const fetchData = async () => {
+      await dispatch(fetchRandomQuestionByCategory());
+    };
+    fetchData();
+
   };
 
   return (

@@ -52,10 +52,13 @@ export const UiSlice = createSlice({
         },
         setShowScoreModal(state, action: PayloadAction<boolean>) {
             state.showScoreModal=action.payload
+        },
+        setDefaultUi() {
+            return initialState;
         }
     }
 });
 
-export const { setLoading, setCorrect, setProgress, setOpenModal, setShowScoreModal } = UiSlice.actions;
+export const { setLoading, setCorrect, setProgress, setOpenModal, setShowScoreModal, setDefaultUi } = UiSlice.actions;
 
 export default UiSlice.reducer;
