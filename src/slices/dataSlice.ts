@@ -102,9 +102,12 @@ export const dataSlice = createSlice({
         setQuestions: (state, action: PayloadAction<Question[]>) => {
             state.questions = action.payload;
         },
+        setDefaultData() {
+            return initialState;
+        }
     }
 });
 
-export const { setScore, nextCurrentQuestion, setSelectedOption, setCurrentQuestion, setQuestions } = dataSlice.actions;
+export const { setScore, nextCurrentQuestion, setSelectedOption, setCurrentQuestion, setQuestions, setDefaultData } = dataSlice.actions;
 
 export default dataSlice.reducer;
