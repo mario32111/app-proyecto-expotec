@@ -94,8 +94,6 @@ const incrementUsers = async (ids: number[]) => {
         if (!response.ok) {
             throw new Error('Error al actualizar las categorías');
         }
-
-        const result = await response.json();
     } catch (error) {
         console.error('Error al hacer la petición a la API:', error);
     }
