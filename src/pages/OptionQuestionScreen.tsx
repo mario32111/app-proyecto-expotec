@@ -1,31 +1,39 @@
 import Progreso from "../components/ProgressBar"; 
-import { Card, CardContent, CardMedia, Slide, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Slide, Typography, CircularProgress } from "@mui/material";
 import Opciones from "../components/Options";
 import Timer from "../components/TimeBar";
 import BotonConfirmar from "../components/BotonConfirmar";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "./../store";
-
 import { RootState } from "../store";
 import { useEffect, useRef } from "react";
 import { fetchRandomQuestionByCategory } from "../slices/dataSlice";
 
 const OptionQuestionScreen = () => {
-  const imagenUrl = useSelector((state: RootState) => state.data.currentQuestion.image || "");  
+  const imagenUrl = useSelector((state: RootState) => state.data.currentQuestion.image || "");
   const pregunta = useSelector((state: RootState) => state.data.currentQuestion.text);
-  const dispatch = useAppDispatch(); // Usa useAppDispatch en lugar de useDispatch
-  const hasFetched = useRef(false); // Bandera para controlar la ejecución
+  const loading = useSelector((state: RootState) => state.ui.loading); // Escucha el estado loading
+  const dispatch = useAppDispatch();
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    if (!hasFetched.current) { // Solo ejecutar si no se ha hecho antes
-      hasFetched.current = true; // Marcar como ejecutado
+    if (!hasFetched.current) {
+      hasFetched.current = true;
       const fetchData = async () => {
         await dispatch(fetchRandomQuestionByCategory());
       };
       fetchData();
     }
   }, [dispatch]);
-  
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress size={60} thickness={5} color="primary" /> {/* Spinner de carga */}
+      </div>
+    );
+  }
+
   return (
     <div style={{ maxWidth: "500px", minWidth: "350px", width: "50%", margin: "20px auto" }}>
       <div style={{ width: "100%" }}>
