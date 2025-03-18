@@ -9,7 +9,14 @@ const ModalResultado: React.FC = () => {
   const isCorrect = useSelector((state: RootState) => state.ui.isCorrect);
   const openModal = useSelector((state: RootState) => state.ui.openedModal);
   const progress = useSelector((state: RootState) => state.ui.progress);
+  const images = useSelector((state: RootState) => state.ui.images);
 
+    // Obtiene una imagen aleatoria de buenas o malas
+    const getRandomImage = () => {
+      const imgList = isCorrect ? images.buenas : images.malas;
+      const randomIndex = Math.floor(Math.random() * imgList.length);
+      return imgList[randomIndex];
+    };
   const onCerrar = () => {
     dispatch(setOpenModal(false)); // Cierra el modal actual
   };
@@ -48,7 +55,12 @@ const ModalResultado: React.FC = () => {
         <Typography variant="h6" color={isCorrect ? "green" : "red"}>
           {isCorrect ? "¡Respuesta Correcta! 🎉" : "Respuesta Incorrecta ❌"}
         </Typography>
-        <Button
+        {/* Muestra una imagen aleatoria según el resultado */}
+        <img
+          src={getRandomImage()}
+          alt={isCorrect ? "Correcto" : "Incorrecto"}
+          style={{ width: "100%", marginTop: "10px", borderRadius: "8px" }}
+        />        <Button
           onClick={onSiguientePregunta}
           variant="contained"
           color="primary"

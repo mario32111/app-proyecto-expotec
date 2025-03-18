@@ -51,8 +51,13 @@ export interface UiState {
   progress: number;
   openedModal: boolean;
   showScoreModal: boolean;
+  images: stikers
 }
 
+interface stikers {
+  buenas: string[],
+  malas: string[]
+}
 
 
 export interface RootState {
