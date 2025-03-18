@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { LinearProgress } from "@mui/material";
 import ModalResultado from "./ModalResultado";
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,47 +34,59 @@ const Timer: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const progressBar = useSelector((state: RootState) => state.ui.progress);
   const showScoreModal = useSelector((state: RootState) => state.ui.showScoreModal);
+  const modalAbierto = useSelector((state: RootState) => state.ui.openedModal); // Nuevo selector para verificar si el modal ya está abierto
+  const timerInterval = useRef<NodeJS.Timeout | null>(null); // Referencia para el intervalo
 
   // Calcular el tiempo restante
   const time = 10 - ((progreso / 100) * duracion / 1000);
   const isCritical = time <= 3; // Cuando quedan 3 segundos
 
   useEffect(() => {
-    if (progressBar === 5) return;
+    if (progressBar === 5 || modalAbierto) { // Si el progreso es 5 o el modal ya está abierto, no iniciar el timer
+      if (timerInterval.current) {
+        clearInterval(timerInterval.current);
+        timerInterval.current = null;
+      }
+      return;
+    }
 
     const intervalo = 100; // Cada cuánto se actualiza el progreso (en ms)
     const incremento = (intervalo / duracion) * 100; // Cuánto aumenta en cada intervalo
 
-    const timer = setInterval(() => {
+    timerInterval.current = setInterval(() => {
       setProgreso((prev) => {
         const nuevoProgreso = prev + incremento;
         if (nuevoProgreso >= 100) {
-          clearInterval(timer);
+          if (!modalAbierto) { // Verifica si el modal NO está abierto antes de abrirlo
+            dispatch(setOpenModal(true));
+            dispatch(setCorrectWithState());
+          }
+          if (timerInterval.current) {
+            clearInterval(timerInterval.current);
+            timerInterval.current = null;
+          }
           return 100;
         }
         return nuevoProgreso;
       });
     }, intervalo);
 
-    return () => clearInterval(timer); // Limpia el intervalo al desmontar el componente
-  }, [progressBar]);
-
-  // Función que valida las respuestas cuando el progreso llega a 100
-  useEffect(() => {
-    if (progreso >= 100) {
-      dispatch(setOpenModal(true));
-      dispatch(setCorrectWithState());
-    }
-  }, [progreso, dispatch]);
+    return () => {
+      if (timerInterval.current) {
+        clearInterval(timerInterval.current);
+        timerInterval.current = null;
+      }
+    }; // Limpia el intervalo al desmontar el componente o al cambiar las dependencias
+  }, [progressBar, dispatch, modalAbierto]);
 
   useEffect(() => {
-    setProgreso(-5);
+    setProgreso(0); // Reinicia el progreso a 0 cuando cambia la pregunta
   }, [progressBar]);
 
   return (
     <TimerContainer>
       <LinearProgress variant="determinate" value={progreso} color="secondary" />
-      {progreso >= 100 && !showScoreModal && <ModalResultado />}
+      {modalAbierto && !showScoreModal && <ModalResultado />} {/* Usa el selector modalAbierto */}
       <ScoreModal />
       <TimeDisplay $isCritical={isCritical}>{time.toFixed(1)} s</TimeDisplay>
     </TimerContainer>
