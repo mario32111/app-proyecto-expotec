@@ -10,7 +10,7 @@ const initialState: UiState = {
     openedModal: false,
     showScoreModal: false,
     images: {
-        buenas: [
+        malas: [
             "https://i.pinimg.com/736x/17/ef/f5/17eff5d4df16b95d8a30184f57a13ed5.jpg",
             "https://i.pinimg.com/736x/e9/eb/9e/e9eb9ec1b0da71003807507b2368cd21.jpg",
             "https://i.pinimg.com/736x/cc/01/94/cc0194b9bdf66583c66c443b4de51981.jpg",
@@ -22,7 +22,7 @@ const initialState: UiState = {
             "https://i.pinimg.com/736x/89/f5/c4/89f5c4595553cfb45bad52c558604307.jpg",
             "https://i.pinimg.com/736x/24/9d/5e/249d5e83ae46ccb9f997aa96977d4b2f.jpg",
         ],
-        malas: [
+        buenas: [
             "https://i.pinimg.com/736x/e7/38/67/e738676e3f188f420dd9bf70557f2bba.jpg",
             "https://i.pinimg.com/736x/a5/97/d9/a597d9c19a2be1657f85bd75910c22c3.jpg",
             "https://i.pinimg.com/736x/08/97/5b/08975b323d6a22bbb3d48cafbcd971e7.jpg",
