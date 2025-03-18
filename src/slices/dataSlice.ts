@@ -128,7 +128,13 @@ export const dataSlice = createSlice({
             state.selectedOption = action.payload;
         },
         setQuestions: (state, action: PayloadAction<Question[]>) => {
-            state.questions = action.payload;
+            // Recorremos cada pregunta y mezclamos sus opciones
+            const shuffledQuestions = action.payload.map(question => ({
+                ...question,
+                options: question.options.sort(() => Math.random() - 0.5), // Mezcla las opciones
+            }));
+        
+            state.questions = shuffledQuestions;
         },
         setDefaultData() {
             return initialState;
