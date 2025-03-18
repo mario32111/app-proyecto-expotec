@@ -13,7 +13,7 @@ const ModalResultado: React.FC = () => {
 
     // Obtiene una imagen aleatoria de buenas o malas
     const getRandomImage = () => {
-      const imgList = isCorrect ? images.buenas : images.malas;
+      const imgList = isCorrect ? images.malas : images.buenas;
       const randomIndex = Math.floor(Math.random() * imgList.length);
       return imgList[randomIndex];
     };
