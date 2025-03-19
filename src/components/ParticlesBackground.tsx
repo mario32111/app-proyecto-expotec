@@ -225,7 +225,7 @@ const ParticlesBackground = () => {
     }
   }, []);
 
-  return <div id="particles-js" style={{ position: "absolute", width: "100%", height: "96%", zIndex: -1 }}></div>;
+  return <div id="particles-js" style={{ position: "absolute", width: "100%", height: "100%", zIndex: -1, backgroundColor: "black" }}></div>;
 };
 
 export default ParticlesBackground;
