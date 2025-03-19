@@ -30,7 +30,7 @@ const TimerContainer = styled.div`
 
 const Timer: React.FC = () => {
   const [progreso, setProgreso] = useState(0);
-  const duracion = 10 * 1000; // 10 segundos en milisegundos
+  const duracion = 15 * 1000; // 10 segundos en milisegundos
   const dispatch = useDispatch<AppDispatch>();
   const progressBar = useSelector((state: RootState) => state.ui.progress);
   const showScoreModal = useSelector((state: RootState) => state.ui.showScoreModal);
@@ -38,8 +38,8 @@ const Timer: React.FC = () => {
   const timerInterval = useRef<NodeJS.Timeout | null>(null); // Referencia para el intervalo
 
   // Calcular el tiempo restante
-  const time = 10 - ((progreso / 100) * duracion / 1000);
-  const isCritical = time <= 3; // Cuando quedan 3 segundos
+  const time = 15 - ((progreso / 100) * duracion / 1000);
+  const isCritical = time <= 5; // Cuando quedan 3 segundos
 
   useEffect(() => {
     if (progressBar === 5 || modalAbierto) { // Si el progreso es 5 o el modal ya está abierto, no iniciar el timer
